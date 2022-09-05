@@ -1,13 +1,71 @@
 import React, {Component} from 'react';
-import {AppRegistry} from 'react-native';
-import {Text,View} from 'react-native';
+import {AppRegistry, StatusBar} from 'react-native';
+import {SafeAreaView,Text,View,FlatList,StyleSheet,Status, Image} from 'react-native';
 
-const textosaludo = () =>{
+const DATA = [
+    {
+        id: 1,
+        title: "Toyota",
+        src: require('./src/imgs/toyota.jpg')
+    },
+    {
+        id: 2,
+        title: "Mazda",
+        src: require('./src/imgs/mazda.jpg')
+    },
+    {
+        id: 3,
+        title: "Mitsubishi",
+        src: require('./src/imgs/mitsubishi.jpeg')
+    }
+];
+
+const Item = ({title,img}) => (
+    <View style={styles.item}>
+        <Text style={styles.title}>{title}</Text>
+        <Image style={styles.img} source={img} />
+    </View>
+);
+
+const App = () => {
+    const renderItem = ({item}) => (
+        <Item title={item.title} img={item.src}/>
+    );
+
     return (
-        <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-            <Text>"Hola mundo"</Text>
-        </View>
+        <SafeAreaView style={styles.container}>
+            <FlatList 
+            data={DATA} 
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            />
+        </SafeAreaView>
     );
 }
 
-AppRegistry.registerComponent("cars", () => textosaludo);
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        marginTop: StatusBar.currentHeight || 0,
+    },
+    item: {
+        backgroundColor: '#f9c2ff',
+        padding: 20,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        alignItems: "center"
+    },
+    title: {
+        fontSize: 32,
+    },
+    img: {
+        width: 200,
+        height: 125,
+        borderWidth: 2,
+        borderColor: '#d35647',
+        resizeMode: 'contain',
+        margin: 8
+    }
+});
+
+AppRegistry.registerComponent("cars", () => App);
